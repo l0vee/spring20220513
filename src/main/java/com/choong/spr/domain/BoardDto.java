@@ -12,4 +12,7 @@ public class BoardDto {
 	private LocalDateTime inserted;
 	
 	private int numOfReply;
+	
+	public String PrettyInserted;
 }
+

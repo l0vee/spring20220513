@@ -55,18 +55,18 @@ public class BoardService {
 	}
 
 
-	public int countBoards() {
-		return mapper.countBoards();
-	}
+//	public int countBoards() {
+//		return mapper.countBoards();
+//	}
 
 	public List<BoardDto> listBoard() {
 		return mapper.selectBoard();
 	}
 
-	public List<BoardDto> listBoardPage(int page, int rowPerPage) {
-		int from = (page-1) * rowPerPage;
-		return mapper.listBoardPage(from, rowPerPage);
-	}
+//	public List<BoardDto> listBoardPage(int page, int rowPerPage) {
+//		int from = (page-1) * rowPerPage;
+//		return mapper.listBoardPage(from, rowPerPage);
+//	}
 
 
 

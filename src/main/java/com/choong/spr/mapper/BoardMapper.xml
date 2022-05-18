@@ -40,11 +40,15 @@
 		VALUES (#{title}, #{body}, #{inserted})
 	</insert>
 	
+	
+	<!--  
 	<select id="countBoards" resultType="int">
 	SELECT Count(b.id)
 	FROM Board b
 	</select>
 	
+	
+
 	<select id="listBoardPage" resultType="int">
 	SELECT b.id id,
 		b.title title,
@@ -54,8 +58,8 @@
 		GROUP BY b.id
 		ORDER BY id DESC
 		LIMIT #{from},#{rowPerPage}
-	</select>
-	
+	</select>-->
+
 
 	<!-- insert update delete -->
 </mapper>

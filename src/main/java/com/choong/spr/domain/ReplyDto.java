@@ -10,4 +10,6 @@ public class ReplyDto {
 	private int boardId; // board_id column과 매칭, 별칭(alias) 잘 쓸 것
 	private String content;
 	private LocalDateTime inserted;
+	public String PrettyInserted;
+	
 }
