@@ -47,26 +47,24 @@ public class BoardService {
 	}
 
 	public boolean addBoard(BoardDto board) {
-		board.setInserted(LocalDateTime.now());
+//		board.setInserted(LocalDateTime.now());
 		
-		int cnt = mapper.insertBoard(board);
-		
-		return cnt == 1;
+	 return mapper.insertBoard(board) == 1;
 	}
 
 
-//	public int countBoards() {
-//		return mapper.countBoards();
-//	}
+	public int countBoard() {
+		return mapper.countBoard();
+	}
 
 	public List<BoardDto> listBoard() {
 		return mapper.selectBoard();
 	}
 
-//	public List<BoardDto> listBoardPage(int page, int rowPerPage) {
-//		int from = (page-1) * rowPerPage;
-//		return mapper.listBoardPage(from, rowPerPage);
-//	}
+	public List<BoardDto> listBoardPage(int page, int rowPerPage) {
+		int from = (page-1) * rowPerPage;
+		return mapper.listBoardPage(from, rowPerPage);
+	}
 
 
 

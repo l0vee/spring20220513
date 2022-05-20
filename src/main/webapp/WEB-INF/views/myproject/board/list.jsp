@@ -54,9 +54,8 @@
 									<a href="${link }">${board.title } </a>
 									
 									<c:if test="${board.numOfReply > 0 }">
-										<span> <i class="fa-solid fa-comments"></i>
+										<!--<span> <i class="fa-solid fa-comments"></i></span>-->
 											[${board.numOfReply }]
-										</span>
 									</c:if></td>
 								<td>${board.inserted }</td>
 							</tr>
@@ -65,6 +64,10 @@
 				</table>
 			</div>
 		</div>
+	</div>
+	
+	<div>
+		<my:PageNation></my:PageNation>
 	</div>
 </body>
 </html>

@@ -36,20 +36,20 @@
 
 	<insert id="insertBoard" useGeneratedKeys="true" keyColumn="id"
 		keyProperty="id">
-		INSERT INTO Board (title, body, inserted)
-		VALUES (#{title}, #{body}, #{inserted})
+		INSERT INTO Board (title, body)
+		VALUES (#{title}, #{body})
 	</insert>
 	
 	
-	<!--  
-	<select id="countBoards" resultType="int">
+ 
+	<select id="countBoard" resultType="int">
 	SELECT Count(b.id)
 	FROM Board b
 	</select>
 	
 	
 
-	<select id="listBoardPage" resultType="int">
+	<select id="listBoardPage" resultType="com.choong.spr.domain.BoardDto">
 	SELECT b.id id,
 		b.title title,
 		b.inserted inserted,
@@ -58,7 +58,7 @@
 		GROUP BY b.id
 		ORDER BY id DESC
 		LIMIT #{from},#{rowPerPage}
-	</select>-->
+	</select>
 
 
 	<!-- insert update delete -->

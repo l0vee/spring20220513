@@ -40,35 +40,35 @@ public class BoardController {
 //		
 //	}
 	
-	@GetMapping("board/list")
-	public void listBoard(Model model) {
-		List<BoardDto> list = service.listBoard();
-		
-		model.addAttribute("boardList", list);
-		
-	}
-	
 //	@GetMapping("board/list")
-//	public void listBoard(@RequestParam(name = "page", defaultValue = "1")int page, Model model) {
-//		int rowPerPage = 5;
+//	public void listBoard(Model model) {
 //		List<BoardDto> list = service.listBoard();
-//	
-//		List<BoardDto> list1 = service.listBoardPage(page,rowPerPage);
-//		int totalRecords = service.countBoards();
-//		
-//		int end = (totalRecords - 1) / rowPerPage + 1;
-//		
-//		PageInfoDto pageInfo = new PageInfoDto();
-//		
-//		pageInfo.setCurrent(page);
-//		pageInfo.setEnd(end);
 //		
 //		model.addAttribute("boardList", list);
-//		model.addAttribute("boards", list1);
-//		model.addAttribute("pageInfo", pageInfo);
-//	
+//		
 //	}
-//	
+	
+	@GetMapping("board/list")
+	public void listBoard(@RequestParam(name = "page", defaultValue = "1")int page, Model model) {
+		int rowPerPage = 5;
+		//List<BoardDto> list = service.listBoard();
+	
+		List<BoardDto> list = service.listBoardPage(page,rowPerPage);
+		int totalRecords = service.countBoard();
+		
+		int end = (totalRecords - 1) / rowPerPage + 1;
+		
+		PageInfoDto pageInfo = new PageInfoDto();
+		
+		pageInfo.setCurrent(page);
+		pageInfo.setEnd(end);
+		
+		model.addAttribute("boardList", list);
+		model.addAttribute("pageInfo", pageInfo);
+		
+	
+	}
+	
 	
 	
 	
