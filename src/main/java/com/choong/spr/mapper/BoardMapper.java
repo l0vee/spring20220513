@@ -8,25 +8,15 @@ import com.choong.spr.domain.BoardDto;
 
 public interface BoardMapper {
 
-
-	BoardDto getBoard(int id);
-
-	int updateBoard(BoardDto board);
-
-	int deleteBoard(int id);
+	List<BoardDto> selectBoardAll(@Param("type")String type, @Param("keyword") String keyword);
 
 	int insertBoard(BoardDto board);
 
-	int countBoard();
+	BoardDto selectBoardById(int id);
 
-	List<BoardDto> selectBoard();
+	int updateBoard(BoardDto dto);
 
-	List<BoardDto> listBoardPage(@Param("from") int from, @Param("rowPerPage") int rowPerPage);
-	
-	
-	
-	//(@Param("from") int from, @Param("rowPerPage") int rowPerPage);
-
+	int deleteBoard(int id);
 
 }
 

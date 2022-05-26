@@ -1,7 +1,6 @@
 package com.choong.spr.service;
 
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,53 +20,37 @@ public class BoardService {
 	@Autowired
 	private ReplyMapper replyMapper;
 
-	public BoardDto getBoard(int id) {
-		return mapper.getBoard(id);
+	public List<BoardDto> listBoard(String type, String keyword) {
+		// TODO Auto-generated method stub
+		return mapper.selectBoardAll(type,"%"+keyword+"%");
 	}
 
-	public boolean updateBoard(BoardDto board) {
-		int cnt = mapper.updateBoard(board);
-		
-		return cnt == 1;
+	public boolean insertBoard(BoardDto board) {
+		// TODO Auto-generated method stub
+		return mapper.insertBoard(board) == 1;
+		//게시물 하나가 잘 추가 됐는지
+	}
+
+	public BoardDto getBoardById(int id) {
+		// TODO Auto-generated method stub
+		return mapper.selectBoardById(id);
+		//int (몇번째 게시물인지)
+	}
+
+	public boolean updateBoard(BoardDto dto) {
+		// TODO Auto-generated method stub
+		return mapper.updateBoard(dto) == 1;
+		//하나 잘 됐는지 boolean이라 true면 1?
 	}
 
 	@Transactional
-	public boolean removeBoardById(int id) {
-		// 댓글 지우기
-		replyMapper.deleteReplyByBoard(id);
-
-		// for transaction
-		// exception
-//		int i = 3 / 0;
+	public boolean deleteBoard(int id) {
 		
-		// 게시물 지우기
-		int cnt = mapper.deleteBoard(id);
+		replyMapper.deleteByBoardId(id);
 		
-		return cnt == 1;
+		return mapper.deleteBoard(id) == 1;
 	}
+	
+}
 
-	public boolean addBoard(BoardDto board) {
-//		board.setInserted(LocalDateTime.now());
-		
-	 return mapper.insertBoard(board) == 1;
-	}
-
-
-	public int countBoard() {
-		return mapper.countBoard();
-	}
-
-	public List<BoardDto> listBoard() {
-		return mapper.selectBoard();
-	}
-
-	public List<BoardDto> listBoardPage(int page, int rowPerPage) {
-		int from = (page-1) * rowPerPage;
-		return mapper.listBoardPage(from, rowPerPage);
-	}
-
-
-
-	}
-
-
+	

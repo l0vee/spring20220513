@@ -6,20 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choong.spr.domain.BoardDto;
-import com.choong.spr.domain.PageInfoDto;
 import com.choong.spr.domain.ReplyDto;
 import com.choong.spr.service.BoardService;
 import com.choong.spr.service.ReplyService;
 
 @Controller
-@RequestMapping("myproject")
+@RequestMapping("board")
 public class BoardController {
 	
 	@Autowired
@@ -28,136 +26,72 @@ public class BoardController {
 	@Autowired
 	private ReplyService replyService;
 
-	// /myproject/board/list
-//	@GetMapping("board/list")
-//	public void listBoard(Model model) {
-//		List<BoardDto> list = service.listBoard();
-//		
-////		pageInfo info = 
-//		
-//		model.addAttribute("boardList", list);
-////		model.addAttribute("pagenum", info);
-//		
-//	}
-	
-//	@GetMapping("board/list")
-//	public void listBoard(Model model) {
-//		List<BoardDto> list = service.listBoard();
-//		
-//		model.addAttribute("boardList", list);
-//		
-//	}
-	
-	@GetMapping("board/list")
-	public void listBoard(@RequestParam(name = "page", defaultValue = "1")int page, Model model) {
-		int rowPerPage = 5;
-		//List<BoardDto> list = service.listBoard();
-	
-		List<BoardDto> list = service.listBoardPage(page,rowPerPage);
-		int totalRecords = service.countBoard();
-		
-		int end = (totalRecords - 1) / rowPerPage + 1;
-		
-		PageInfoDto pageInfo = new PageInfoDto();
-		
-		pageInfo.setCurrent(page);
-		pageInfo.setEnd(end);
-		
+	@RequestMapping("list")
+	public void list(@RequestParam(name="keyword", defaultValue="") String keyword,
+			@RequestParam(name="type", defaultValue="") String type,
+			Model model) {
+		List<BoardDto> list = service.listBoard(type, keyword);
 		model.addAttribute("boardList", list);
-		model.addAttribute("pageInfo", pageInfo);
-		
-	
 	}
 	
-	
-	
-	
-	@GetMapping("board/{id}") // 책 366쪽
-	public String getBoard(@PathVariable("id") int id, Model model) {
-		System.out.println(id);
+	@GetMapping("insert")
+	public void insert() {
 		
-		// 서비스일 시켜서 id에 해당하는 게시물 select
-		BoardDto dto = service.getBoard(id);
+	}
+	
+	@PostMapping("insert")
+	public String insert(BoardDto board, RedirectAttributes rttr) {
+		boolean success = service.insertBoard(board);
 		
-		List<ReplyDto> replyList = replyService.listReplyByBoardId(id);
+		if (success) {
+			rttr.addFlashAttribute("message", "새 글이 등록되었습니다.");
+		} else {
+			rttr.addFlashAttribute("message", "새 글이 등록되지 않았습니다.");
+		}
 		
-		// 모델에 넣고
+		return "redirect:/board/list";
+	}
+	
+	@GetMapping("get")
+	public void get(int id, Model model) {
+		BoardDto dto = service.getBoardById(id);
+		List<ReplyDto> replyList = replyService.getReplyByBoardId(id);
 		model.addAttribute("board", dto);
-		model.addAttribute("replyList", replyList);
 		
-		// /WEB-INF/views/myproject/board/get.jsp로 포워드
-		return "/myproject/board/get";
+		//model.addAttribute("replyList", replyList);
+		//AJAX로 댓글 가져올 거니까 삭제하자.
 	}
 	
-	@PostMapping("board/modify")
-	public String modifyBoard(BoardDto board, RedirectAttributes rttr) {
-		boolean success = service.updateBoard(board);
+	@PostMapping("modify")
+	public String modify(BoardDto dto, RedirectAttributes rttr) {
+		boolean success = service.updateBoard(dto);
 		
 		if (success) {
-			rttr.addFlashAttribute("message","게시물이 성공적으로 수정되었습니다!");
-			
+			rttr.addFlashAttribute("message", "글이 수정되었습니다.");
 		} else {
-			rttr.addFlashAttribute("message","게시물 수정에 실패하였습니다.");
+			rttr.addFlashAttribute("message", "글이 수정되지 않았습니다.");
 		}
 		
-		return "redirect:/myproject/board/" + board.getId();
+		rttr.addAttribute("id", dto.getId());
+		
+		return "redirect:/board/get";
 	}
 	
-	@PostMapping("board/remove")
-	public String removeBoard(int id) {
-		boolean success = service.removeBoardById(id);
+	@PostMapping("remove")
+	public String remove(BoardDto dto, RedirectAttributes rttr) {
+		
+		boolean success = service.deleteBoard(dto.getId());
 		
 		if (success) {
+			rttr.addFlashAttribute("message", "글이 삭제 되었습니다.");
 			
 		} else {
-			
+			rttr.addFlashAttribute("message", "글이 삭제 되지 않았습니다.");
 		}
 		
-		return "redirect:/myproject/board/list";
+		return "redirect:/board/list";
 	}
-	
-	@GetMapping("board/write")
-	public void writeBoard() {
-		
-	}
-	
-	@PostMapping("board/write")
-	public String writeBoardProcess(BoardDto board, RedirectAttributes rttr ) {
-		boolean success = service.addBoard(board);
-		
-		if (success) {
-			rttr.addFlashAttribute("message","게시물이 성공적으로 등록되었습니다!");
-			
-		} else {
-			rttr.addFlashAttribute("message","게시물 등록에 실패하였습니다.");
-		}
-		
-		return "redirect:/myproject/board/" + board.getId();
-	}
-	
-//	@PostMapping("board/list")
-//	public String listBoard(@RequestParam(name = "page", defaultValue = "1")int page, Model model) {
-//		int rowPerPage = 5;
-//		
-//		List<BoardDto> list = service.listBoardPage(page, rowPerPage);
-//		
-//		int totalRecords = service.countBoards();
-//		int end = (totalRecords - 1) / rowPerPage + 1;
-//		
-//		PageInfoDto pageInfo = new PageInfoDto();
-//		
-//		pageInfo.setCurrent(page);
-//		pageInfo.setEnd(end);
-//		
-//		model.addAttribute("boards", list);
-//		model.addAttribute("pageInfo", pageInfo);
-//	
-//		return "/myproject/board/list";
-	
-	
 }
-
-
 
 
 
